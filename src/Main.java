@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
         String[] allowRimNumber = {"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"};  //  Словапь допускаемых символов
 
@@ -26,16 +26,18 @@ public class Main {
         if(indexDot == -1) // Проверка на дробное значение
             typeFloat = false;
 
-        if(!result[1].equals("+") && !result[1].equals("-")  &&  !result[1].equals("*")  &&  !result[1].equals("/")){
-            System.out.print("Строка не является математической операцией. Используйте: '+', '-', '*', '/' операторы. \n");
-            return;
-        } // Проверка ввода
+        if(result.length > 3)
+            throw new Exception("Так как формат метематисеской операции не удовлетворяет заданию - два операнда и один оператор"); // Проверка ввода
+
+
+
+
+
 
         for (String s : result) {
 
             if (s == null) {
-                System.out.print("Строка не является математической операцией 2\n");
-                return;
+                throw new Exception("Строка не является математической операцией 2\n");
             }
 
             System.out.print(s + " ");
@@ -44,7 +46,7 @@ public class Main {
 
         if(rimVal){
             if(!rimExpression(result[0], result[1], result[2]))
-                System.out.print("Проверьте, верность введеных данных\n");
+                throw new Exception("Проверьте, верность введеных данных\n");
         }
         else
             defaultExpression(result[0], result[1], result[2], typeFloat);
@@ -52,10 +54,13 @@ public class Main {
 
 
     // Обработка арабской СИ
-    public static void defaultExpression(String variable1, String operator, String variable2, boolean typeFloat){
+    public static void defaultExpression(String variable1, String operator, String variable2, boolean typeFloat) throws Exception{
         if(typeFloat){
             double varFloat1 = Double.parseDouble(variable1);
             double varFloat2 = Double.parseDouble(variable2);
+
+            if(varFloat1 > 10 || varFloat2 < 1)
+                throw new Exception("Используйте числа от 1 до 10\n");
 
             switch (operator){
                 case ("+") -> System.out.print("= " + (varFloat1 + varFloat2) + "\n");
@@ -77,21 +82,27 @@ public class Main {
         }
     }
     // Обработка римской СИ
-    public static boolean rimExpression(String variable1, String operator, String variable2){
+    public static boolean rimExpression(String variable1, String operator, String variable2) throws Exception{
         String[] rims = {"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "L", "C"};
 
-        int varInt1 = 1;
-        int varInt2 = 1;
+
+
+        int varInt1 = -100;
+        int varInt2 = -100;
 
         for(int i = 0; i < rims.length; i++){
 
             if(variable1.equals(rims[i])){
-                varInt1 += i;
+                varInt1 = i + 1;
             }
 
             if(variable2.equals(rims[i])){
-                varInt2 += i;
+                varInt2 = i + 1;
             }
+        }
+
+        if(varInt1 == -100 || varInt2 == -100){
+            throw new Exception("Используйте числа от 1 до 10\n");
         }
 
         int response = 0;
