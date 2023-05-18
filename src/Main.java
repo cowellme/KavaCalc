@@ -73,6 +73,9 @@ public class Main {
             int varInt1 = Integer.parseInt(variable1);
             int varInt2 = Integer.parseInt(variable2);
 
+            if(varInt1 > 10 || varInt2 < 1)
+                throw new Exception("Используйте числа от 1 до 10\n");
+
             switch (operator) {
                 case ("+") -> System.out.print("= " + (varInt1 + varInt2) + "\n");
                 case ("-") -> System.out.print("= " + (varInt1 - varInt2) + "\n");
@@ -83,8 +86,20 @@ public class Main {
     }
     // Обработка римской СИ
     public static boolean rimExpression(String variable1, String operator, String variable2) throws Exception{
-        String[] rims = {"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "L", "C"};
 
+        String[] rims = {"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "L", "C"};
+        boolean flag1 = false, flag2 = false;
+
+        for (int i = 0; i < 10; i++){
+            if(!variable1.equals(rims[i]))
+                flag1 = true;
+
+            if(!variable2.equals(rims[i]))
+                flag2 = true;
+        }
+
+        if(flag1 || flag2)
+            throw new Exception("Используйте числа от 1 до 10");
 
 
         int varInt1 = -100;
